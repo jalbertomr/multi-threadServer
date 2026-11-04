@@ -37,7 +37,6 @@ int main(int argc ,char** argv){
    strcat(sendline, argv[1]);
    //for test sprintf(sendline, "GET / HTTP/1.1\r\n\r\n");
    sendbytes = strlen(sendline);
-   int sizeofSendbytes = sizeof(sendline); //borrar
 
    printf("Sending request: %s\n", sendline);
    check((write(sockfd, sendline, sendbytes) != sendbytes), "write error\n");
