@@ -32,7 +32,7 @@ int main(int argc ,char** argv){
 
    printf("Connecting to server on port %d\n", SERVER_PORT);
    check(connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)), "connect failed");
-   
+
    strcat(sendline, SEARCH_PATH);
    strcat(sendline, argv[1]);
    //for test sprintf(sendline, "GET / HTTP/1.1\r\n\r\n");

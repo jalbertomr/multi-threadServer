@@ -11,7 +11,7 @@
 #define SOCKETERROR -1
 #define PATH_MAX 4096
 #define SOCKERERROR -1
-#define SERVER_BACKLOG 3
+#define SERVER_BACKLOG 1
 
 int check(int exp, const char* msg);
 void handle_connection(int client_socket);
