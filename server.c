@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #define SERVERPORT 8989
 #define BUFFER_SIZE 4096
@@ -14,10 +15,10 @@
 #define SERVER_BACKLOG 1
 
 int check(int exp, const char* msg);
-void handle_connection(int client_socket);
+void *handle_connection(void *p_th_socket_fd);
 
 int main(int argc, char* argv[]) {
-  int server_fd, new_socket;
+  int server_fd, socket_fd;
   struct sockaddr_in address;
   int addrlen = sizeof(address);
 
@@ -40,7 +41,7 @@ int main(int argc, char* argv[]) {
   while(1) {
     // Accept incoming connection
     printf("Waiting for a new connection...\n");
-    check(new_socket = accept(server_fd, (struct sockaddr*)&address,
+    check(socket_fd = accept(server_fd, (struct sockaddr*)&address,
                               (socklen_t*)&addrlen),
           "accept failed.");
 
@@ -48,13 +49,20 @@ int main(int argc, char* argv[]) {
 
     // Handle the connection in a new thread or process as needed
     // For simplicity, we will just close the socket here
-    handle_connection(new_socket);
+    //handle_connection(socket_fd);
+    pthread_t thread_id;
+    int *p_th_socket_fd = malloc(sizeof(int));  // Allocate memory for the socket file descriptor
+    *p_th_socket_fd = socket_fd;  // Pass the socket file descriptor to the thread
+    pthread_create(&thread_id, NULL, handle_connection, p_th_socket_fd);
+    pthread_detach(thread_id);  // Detach the thread to allow it to clean up after itself 
   }
 
   return 0;
 }
 
-void handle_connection(int client_socket) {
+void *handle_connection(void *p_th_socket_fd) {
+  int client_socket = *((int *)p_th_socket_fd);
+  free(p_th_socket_fd);  // Free the allocated memory for the socket file descriptor
   char buffer[BUFFER_SIZE];
   int msgsize = 0;
   size_t bytes_read;
@@ -76,7 +84,7 @@ void handle_connection(int client_socket) {
     fprintf(stdout, "Invalid path received: %s\n", buffer);
     check(write(client_socket, buffer, strlen(buffer)), "write");
     close(client_socket);
-    return;
+    return NULL;
   }
 
   printf("Opening file: %s\n", actual_path);
@@ -84,7 +92,7 @@ void handle_connection(int client_socket) {
   if(file == NULL) {
     perror("fopen");
     close(client_socket);
-    return;
+    return NULL;
   }
 
   printf("Sending file contents to client...\n");
@@ -95,4 +103,5 @@ void handle_connection(int client_socket) {
   close(client_socket);
   fclose(file);
   printf("File sent successfully\n");
+  return NULL;
 }

@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <time.h>
 
 #define SEARCH_PATH "tmp/"
 #define MAXLINE 4096
@@ -14,6 +15,9 @@ int main(int argc ,char** argv){
    char sendline[MAXLINE];
    char recvline[MAXLINE];
    char msgerror[100];
+   struct timespec start, end;
+   
+   clock_gettime(CLOCK_MONOTONIC, &start);
 
    if (argc <= 1) {
      sprintf(msgerror, "usage: %s <file to bring from server>", argv[0]);
@@ -48,4 +52,9 @@ int main(int argc ,char** argv){
      printf("%s", recvline);
    }
    check( (n < 0), "read error\n");
+   printf("\n");
+
+   clock_gettime(CLOCK_MONOTONIC, &end);
+   printf("Time taken: %f seconds (%s)\n", 
+    (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9, argv[1]);
 }

@@ -39,6 +39,11 @@ server  21783 root   1u   CHR  136,3      0t0       6 /dev/pts/3
 server  21783 root   2u   CHR  136,3      0t0       6 /dev/pts/3
 server  21783 root   3u  IPv4  97236      0t0     TCP *:http (LISTEN)
 
+# To monitor proces smap
+
+```
+cat /proc/<pid>/smap
+```
 # To Continuous monitoring connections
 
 ```
@@ -70,6 +75,61 @@ tcp      TIME-WAIT    0         0                  127.0.0.1:8989           127.
 tcp      LISTEN       0         4096                   [::1]:631                 [::]:*
 
 ```
+
+```
+cat /proc/<PID>/net/tcp
+
+sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+0: 0100007F:A955 00000000:0000 0A 00000000:00000000 00:00000000 00000000  1000        0 61495 1 0000000000000000 100 0 0 10                    
+1: 00000000:231D 00000000:0000 0A 00000000:00000000 00:00000000 00000000  1000        0 1589886 1 0000000000000000 100 0 0 10 0                   
+2: 3600007F:0035 00000000:0000 0A 00000000:00000000 00:00000000 00000000   989        0 16720 1 0000000000000000 100 0 0 10 5                     
+3: 0100007F:0277 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 1375162 1 0000000000000000 100 0 0 10 0                   
+4: 0100007F:84EB 00000000:0000 0A 00000000:00000000 00:00000000 00000000  1000        0 59647 1 0000000000000000 100 0 0 10 0                     
+5: 3500007F:0035 00000000:0000 0A 00000000:00000000 00:00000000 00000000   989        0 16718 1 0000000000000000 100 0 0 10 5                     
+6: 0964A8C0:DA0E 1A72528C:01BB 01 00000000:00000000 02:00000046 00000000  1000        0 1645210 2 0000000000000000 26 4 31 2 2                    
+```
+
+```
+cat /proc/792765/net/protocols
+protocol  size sockets  memory press maxhdr  slab module     cl co di ac io in de sh ss gs se re bi br ha uh gp em
+RFCOMM     896      0      -1   NI       0   no   rfcomm      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+QIPCRTR    832      0      -1   NI       0   yes  qrtr        n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+ALG        840      0      -1   NI       0   no   af_alg      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+BNEP       864      0      -1   NI       0   no   bnep        n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+SCO        904      0      -1   NI       0   no   bluetooth   n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+L2CAP      888      0      -1   NI       0   no   bluetooth   n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+HCI        944      0      -1   NI       0   no   bluetooth   n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PACKET    1664      3      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+MPTCPv6   2144      0     126   no       0   yes  kernel      y  y  y  n  y  y  y  y  y  y  y  y  n  n  y  y  y  n
+PINGv6    1408      0      -1   NI       0   yes  kernel      y  y  y  n  n  y  n  n  y  y  y  y  y  y  n  y  y  n
+RAWv6     1408      1      -1   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  y  y  y  y  n  n
+UDPLITEv6 1472      0    1310   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  y  y  y  n
+UDPv6     1472      7    1310   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  y  y  y  n
+TCPv6     2560      1     126   no     320   yes  kernel      y  y  y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+XDP       1088      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UNIX-STREAM 1152   1045      -1   NI       0   yes  kernel      y  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UNIX      1152     90      -1   NI       0   yes  kernel      y  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UDP-Lite  1344      0    1310   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  y  y  y  n
+MPTCP     2016      0     126   no       0   yes  kernel      y  y  y  n  y  y  y  y  y  y  y  y  n  n  y  y  y  n
+PING      1056      0      -1   NI       0   yes  kernel      y  y  y  n  n  y  n  n  y  y  y  y  y  y  n  y  y  n
+RAW       1216      0      -1   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  y  y  y  y  n  n
+UDP       1344     13    1310   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  y  y  y  n
+TCP       2432      8     126   no     320   yes  kernel      y  y  y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+MCTP       872      0      -1   NI       0   no   kernel      y  n  n  n  n  y  n  n  n  n  n  n  n  n  y  y  n  n
+NETLINK   1120     73      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+```
+
+```
+cat /proc/792765/net/sockstat
+ockets: used 1275
+TCP: inuse 9 orphan 0 tw 0 alloc 10 mem 127
+UDP: inuse 13 mem 1310
+UDPLITE: inuse 0
+RAW: inuse 0
+FRAG: inuse 0 memory 0
+```
+
+
 ```
 # To monitor the traffic just localhost 
 ```
@@ -111,4 +171,25 @@ ulimit -Sn        //show the soft limit, what the kernel enforces by default
 /etc/security/limits.conf
 hard nofile 65535
 soft nofile 65536
+```
+
+# configuring server for max connctions
+
+int listen(int sockfd, int backlog) which is in lib.c, uses backlog to configure the max connections
+but if is less than /proc/sys/net/core/somaxconn, the kernel takes the greater, by default is 4096.
+To change the /proc/sys/net/core/somaxconn then
+
+
+```
+cat /proc/sys/net/core/somaxconn
+4096  
+```
+
+```
+sudo sysctl -w net.core.somaxconn=1024   
+```
+
+```
+echo "net.core.somaxconn = 1024" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p   
 ```
