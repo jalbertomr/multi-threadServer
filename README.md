@@ -38,7 +38,7 @@ server  21783 root   0u   CHR  136,3      0t0       6 /dev/pts/3
 server  21783 root   1u   CHR  136,3      0t0       6 /dev/pts/3
 server  21783 root   2u   CHR  136,3      0t0       6 /dev/pts/3
 server  21783 root   3u  IPv4  97236      0t0     TCP *:http (LISTEN)
-
+```
 # To monitor proces smap
 
 ```
@@ -47,7 +47,9 @@ cat /proc/<pid>/smap
 # To Continuous monitoring connections
 
 ```
-watch -n 2 'ss -tunap'
+watch -n 2 'ss -tunap' 
+OR 
+watch -n 2 'ss -tn dport = :8989'
 
 Netid    State        Recv-Q    Send-Q         Local Address:Port        Peer Address:Port     Process
 udp      UNCONN       0         0                 127.0.0.54:53               0.0.0.0:*
@@ -121,7 +123,8 @@ NETLINK   1120     73      -1   NI       0   no   kernel      n  n  n  n  n  n  
 
 ```
 cat /proc/792765/net/sockstat
-ockets: used 1275
+
+sockets: used 1275
 TCP: inuse 9 orphan 0 tw 0 alloc 10 mem 127
 UDP: inuse 13 mem 1310
 UDPLITE: inuse 0
@@ -129,8 +132,6 @@ RAW: inuse 0
 FRAG: inuse 0 memory 0
 ```
 
-
-```
 # To monitor the traffic just localhost 
 ```
  sudo iftop -i lo
@@ -150,15 +151,25 @@ tcp     ESTAB    0         0            [2806:2f0:5160:fa94:7e30:6369:b405:21fb]
 ```
 # To Monitor the Threads of a process
 
-```ps -o nlwp= -p <PID>```   
+```
+ps -o nlwp= -p <PID>
+```   
 or
-```ps -T -p <PID>```   
+```
+ps -T -p <PID>
+```   
 or
-```grep '^Threads:' /proc/<PID>/status   ```
+```
+grep '^Threads:' /proc/<PID>/status
+```
 or
-```top -H -p <PID>   ```
+```
+top -H -p <PID>
+```
 or
-```watch -n 1 ps -o thcount= -p <PID>   ```
+```
+watch -n 1 ps -o thcount= -p <PID>
+```
 
 ## View Current limits
 ```
