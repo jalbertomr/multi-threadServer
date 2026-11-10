@@ -22,7 +22,7 @@ int main(int argc ,char** argv){
    if (argc <= 1) {
      sprintf(msgerror, "usage: %s <file to bring from server>", argv[0]);
      fprintf(stderr, "%s\n", msgerror);
-     exit(1);
+     exit(EXIT_FAILURE);
    }
    
    printf("Create socket\n");

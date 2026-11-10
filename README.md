@@ -1,6 +1,9 @@
 # Simple Web Server and Web Client
 
 A server that return the file content requested by the client
+references: https://www.rfc-editor.org/info/rfc793/#section-1.1
+            https://github.com/torvalds/linux/blob/master/net/socket.c
+
 
 ## To Build the project
 ```
